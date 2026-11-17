@@ -13,6 +13,7 @@ import { UsersService } from './users.service';
   ],
   controllers: [UsersController],
   providers: [UsersService],
-  exports: [UsersService],
+  // MongooseModule: lets admin lookups (ACC-17) join the users collection.
+  exports: [UsersService, MongooseModule],
 })
 export class UsersModule {}
