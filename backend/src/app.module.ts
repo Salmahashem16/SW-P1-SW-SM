@@ -8,6 +8,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { AuthModule } from './auth/auth.module';
+import { ModerationModule } from './moderation/moderation.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -39,6 +40,7 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     AuditLogsModule,
     AdminModule,
+    ModerationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
