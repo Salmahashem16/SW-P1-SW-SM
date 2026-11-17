@@ -8,6 +8,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { AuthModule } from './auth/auth.module';
+import { BookingsModule } from './bookings/bookings.module';
+import { DomainEventsModule } from './common/events/domain-events';
+import { FlightsModule } from './flights/flights.module';
+import { HotelsModule } from './hotels/hotels.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -35,8 +39,12 @@ import { UsersModule } from './users/users.module';
         return { uri };
       },
     }),
+    DomainEventsModule,
     UsersModule,
     AuthModule,
+    FlightsModule,
+    HotelsModule,
+    BookingsModule,
     AuditLogsModule,
     AdminModule,
   ],
