@@ -1,16 +1,18 @@
+
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { Airline, AirlineSchema } from './schemas/airline.schema';
+import { Airport, AirportSchema } from './schemas/airport.schema';
+import { Flight, FlightSchema } from './schemas/flight.schema';
 
-/**
- * Owner: Member 3 (Flights). Add your Flight/Airport schemas, controllers
- * and services here. MongooseModule is exported so other modules (admin,
- * bookings) can inject the Airline model.
- */
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: Airline.name, schema: AirlineSchema }]),
+    MongooseModule.forFeature([
+      { name: Airline.name, schema: AirlineSchema },
+      { name: Airport.name, schema: AirportSchema },
+      { name: Flight.name, schema: FlightSchema },
+    ]),
   ],
   exports: [MongooseModule],
 })
