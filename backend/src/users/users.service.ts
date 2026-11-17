@@ -9,11 +9,12 @@ import {
   Optional,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 
 import { User } from './schemas/user.schema';
 import type {
+  ProviderType,
   UserDocument,
   UserRole,
   UserStatus,
@@ -159,6 +160,20 @@ export class UsersService {
         runValidators: true,
       })
       .exec();
+  }
+
+  /** ACC-15: ids of the moderator accounts linked to a hotel or airline. */
+  async findModeratorIdsForProvider(
+    providerType: ProviderType,
+    providerId: string,
+  ): Promise<string[]> {
+    const moderators = await this.userModel
+      .find({ providerType, providerId: new Types.ObjectId(providerId) })
+      .select('_id')
+      .lean()
+      .exec();
+
+    return moderators.map((moderator) => moderator._id.toString());
   }
 
   /** ACC-14 */
