@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -19,6 +21,7 @@ import { AdminService } from './admin.service';
 import { CreateModeratorDto } from './dto/create-moderator.dto';
 import { ListAccountsQueryDto } from './dto/list-accounts-query.dto';
 import { ListAuditLogsQueryDto } from './dto/list-audit-logs-query.dto';
+import { AdminResetPasswordDto } from './dto/reset-password.dto';
 import { SuspendAccountDto } from './dto/suspend-account.dto';
 
 @ApiTags('Admin')
@@ -69,6 +72,20 @@ export class AdminController {
     @Param('id') id: string,
   ) {
     return this.adminService.reactivateAccount(admin, id);
+  }
+
+  @Post('users/:id/reset-password')
+  @HttpCode(HttpStatus.OK)
+  @ApiOperation({
+    summary:
+      "Reset a user's or moderator's password to a temporary one (ACC-07a)",
+  })
+  resetPassword(
+    @CurrentUser() admin: AuthUser,
+    @Param('id') id: string,
+    @Body() dto: AdminResetPasswordDto,
+  ) {
+    return this.adminService.resetPassword(admin, id, dto.temporaryPassword);
   }
 
   @Get('audit-logs')

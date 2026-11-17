@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   UnauthorizedException,
@@ -230,6 +231,13 @@ export class AuthService {
 
     if (!currentPasswordMatches) {
       throw new UnauthorizedException('Current password is incorrect');
+    }
+
+    // ACC-07a / ACC-13: a temporary password must actually be replaced.
+    if (dto.newPassword === dto.currentPassword) {
+      throw new BadRequestException(
+        'New password must be different from the current password',
+      );
     }
 
     const passwordHash = await bcrypt.hash(dto.newPassword, BCRYPT_ROUNDS);
