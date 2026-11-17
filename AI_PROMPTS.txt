@@ -1,0 +1,16 @@
+================================================
+Date: 2026-11-17
+Student: Malak Mohamed
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: ACC-07a
+
+Prompt:
+Implement the admin-assisted password reset endpoint
+(POST /api/admin/users/:id/reset-password) on its own feature branch,
+following the project's branching plan, and explain how to test it in Swagger.
+
+How the output was used:
+Reviewed and committed the endpoint, the temporary-password validation,
+the audit-log entry and the check that the new password differs from the
+temporary one. Tested every case step by step in Swagger before pushing.
+================================================
