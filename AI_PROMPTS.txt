@@ -14,3 +14,97 @@ Reviewed and committed the endpoint, the temporary-password validation,
 the audit-log entry and the check that the new password differs from the
 temporary one. Tested every case step by step in Swagger before pushing.
 ================================================
+================================================
+Date: 2026-11-17
+Student: Malak Mohamed
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: (planning) ACC-07a, ACC-13, ACC-14, ACC-15, ACC-16, ACC-17, ACC-18, GEN-07, GEN-09, GEN-10
+
+Prompt:
+These are the tasks assigned to me. Should I create a branch for each task?
+Then: what is done from my list and what is left? Members 3, 4 and 5 are
+waiting for me; what is the best plan so I don't need to make edits after
+they finish?
+
+How the output was used:
+Grouped my requirements into one branch per coherent unit of work instead
+of one per ID (spec section 10.3). Checked which requirements were already
+merged. Chose to add minimal skeleton schemas for the providers and bookings
+my features depend on, so my teammates and I could work in parallel without
+renaming fields later.
+================================================
+================================================
+Date: 2026-11-17
+Student: Malak Mohamed
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: GEN-09, GEN-10, GEN-07
+
+Prompt:
+Implement content reporting (GEN-09) and admin moderation of reports and
+content (GEN-10) on its own feature branch, even though the post, comment,
+review and itinerary modules are not merged yet.
+
+How the output was used:
+Reviewed and committed a moderation module: POST /api/reports (one report
+per user per item, enforced by a unique index), the admin report list and
+resolve endpoint (dismiss / hide / delete), and direct hide/unhide/delete.
+Content models are looked up by name, so it works as soon as each owner's
+module is merged; a schema plugin and visibleTo() helper let owners hide
+content from everyone except the author and admins. Every action is
+audit-logged. Verified with a 45-check end-to-end test on a throwaway
+database.
+================================================
+================================================
+Date: 2026-11-17
+Student: Malak Mohamed
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: ACC-15, ACC-17, ACC-12, ACC-13, GEN-01, GEN-11, PAY-04
+
+Prompt:
+Can I create the schemas with what I need, and then my teammates add what
+they need to them? I need to finish my code today; decide the best plan.
+
+How the output was used:
+Created skeleton Airline, Hotel, FlightBooking and HotelBooking schemas in
+the owners' folders, with only the fields admin features read, plus shared
+helpers: provider active/inactive status, GEN-11 booking statuses, and a
+small event bus so notifications (GEN-01) don't couple modules. This also
+enabled the ACC-12 "upcoming bookings" check and the ACC-13 provider
+existence check. Verified with a 13-check end-to-end test.
+================================================
+================================================
+Date: 2026-11-17
+Student: Malak Mohamed
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: ACC-15, ACC-16, GEN-01, GEN-07
+
+Prompt:
+Implement admin deactivation and reactivation of hotels and airlines
+(ACC-15), separate from suspending the moderator, and notify affected
+parties.
+
+How the output was used:
+Reviewed and committed PATCH /api/admin/providers/:type/:id/deactivate and
+/reactivate. The update is conditional on the current state, so concurrent
+requests can't both succeed; moderator accounts and confirmed bookings are
+untouched. Emits provider and account events for notifications (replacing
+the earlier TODOs) and writes audit entries. Verified with a 23-check
+end-to-end test, including concurrent requests.
+================================================
+================================================
+Date: 2026-11-17
+Student: Malak Mohamed
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: ACC-17, GEN-05
+
+Prompt:
+Implement the admin's read-only list of all flight and hotel bookings,
+filterable by type, status and date range.
+
+How the output was used:
+Reviewed and committed GET /api/admin/bookings, which combines both booking
+collections in one MongoDB aggregation ($unionWith) so pagination and totals
+are correct across them. Verified with a 19-check end-to-end test. Also used
+the assistant to check that all five PRs merge into develop without
+conflicts, and to resolve the one app.module.ts conflict.
+================================================
