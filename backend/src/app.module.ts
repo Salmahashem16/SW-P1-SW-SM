@@ -12,6 +12,7 @@ import { BookingsModule } from './bookings/bookings.module';
 import { DomainEventsModule } from './common/events/domain-events';
 import { FlightsModule } from './flights/flights.module';
 import { HotelsModule } from './hotels/hotels.module';
+import { ModerationModule } from './moderation/moderation.module';
 import { UsersModule } from './users/users.module';
 
 @Module({
@@ -47,6 +48,7 @@ import { UsersModule } from './users/users.module';
     BookingsModule,
     AuditLogsModule,
     AdminModule,
+    ModerationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

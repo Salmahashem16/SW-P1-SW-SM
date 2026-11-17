@@ -14,6 +14,7 @@ export const AUDIT_ACTIONS = [
   'provider.reactivated',
   'report.dismissed',
   'content.hidden',
+  'content.unhidden',
   'content.deleted',
 ] as const;
 export type AuditAction = (typeof AUDIT_ACTIONS)[number];
