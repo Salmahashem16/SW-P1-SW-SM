@@ -1,3 +1,83 @@
+Student: Salma Mohamed Hashem (Member 1 - Accounts, Authentication & Administration)
+Tool: Claude
+Prompt:
+The backend could not connect to MongoDB Atlas: the SRV DNS lookup was
+refused by the local resolver (127.0.0.1), and then I got
+"bad auth : authentication failed".
+How the output was used:
+Added an optional DNS_SERVERS setting in app.module.ts that overrides
+Node's DNS servers before Mongoose connects, and documented it in
+.env.example. For the authentication error, I fixed the connection string
+in my local .env (removed the <> placeholder brackets around the password).
+No credentials were shared with the AI tool.
+================================================
+
+Student: Salma Mohamed Hashem (Member 1 - Accounts, Authentication & Administration)
+Tool: Claude
+Prompt:
+How do I commit everything except unnecessary files, push my branch, open
+a pull request to develop, and fix a rejected push?
+How the output was used:
+Added "Claude outputs/" and *.tsbuildinfo to .gitignore, pushed my work to
+feature/ACC-member1-accounts-admin, and opened a pull request into develop
+(merged as #33). develop will be merged into main only at milestones.
+================================================
+
+Student: Salma Mohamed Hashem (Member 1 - Accounts, Authentication & Administration)
+Tool: Claude
+Prompt:
+FilterQuery TypeScript error Screenchot
+How the output was used:
+I explained that your installed Mongoose types didn’t export FilterQuery, 
+so you should remove it from the import and let TypeScript infer the query type, 
+or define the query shape yourself. This was a build fix for UsersService, not a separate requirement. 
+It supports the account search/filter code in listAccounts(), w
+hich corresponds to ACC-14 if that feature is in your assigned scope.
+================================================
+
+Student: Salma Mohamed Hashem (Member 1 - Accounts, Authentication & Administration)
+Tool: Claude
+Prompt:
+how to test using Swagger
+How the output was used:
+I gave you a test checklist for Swagger: register a user, try invalid or duplicate registration,
+log in with correct and incorrect passwords, and check lockout behavior. 
+I also suggested checking cookie creation and removal, /auth/me, refresh, and the idle timeout. 
+Your screenshots confirmed successful registration and login. T
+hese tests relate to ACC-01 (registration), ACC-04 (login), ACC-05 (lockout), 
+ACC-06 (logout and idle timeout), and ACC-19 (cookies and /auth/me).
+================================================
+
+Student: Salma Mohamed Hashem (Member 1 - Accounts, Authentication & Administration)
+Tool: Claude
+Prompt:
+here is UsersService tell me whats wrong
+How the putput was used:
+I pointed out that saveRefreshTokenHash() needed to accept null, 
+because the auth service uses that to revoke refresh tokens. 
+I also corrected the search-regex escaping and showed a revised service. 
+That code supports ACC-06 (session revocation and activity), ACC-08 (password update and token revocation), 
+ACC-09 (profile edits), ACC-12 (deactivation), and account listing/filtering under ACC-14, if assigned to you.
+================================================
+
+Student: Salma Mohamed Hashem (Member 1 - Accounts, Authentication & Administration)
+Tool: Claude
+prompt: 
+How to implement Http cookies req
+How output was used:
+ACC-06 (logout/session handling): login should set the auth cookie, and logout should clear it. The requirement also mentions revoking the refresh token and ending an idle session after 30 minutes, so setting a cookie alone won’t finish all of ACC-06.
+Your current login returns the access token in the JSON response. Moving it into an HttpOnly cookie is part of implementing that cookie-based auth flow.
+@Res({ passthrough: true }) lets Nest set the cookie while still returning your normal JSON response. The cookie uses HttpOnly, and secure turns on automatically in production over HTTPS. 
+Your AuthService.login() should keep returning { accessToken, user }; the controller puts the token in the cookie and returns only the user to the client.
+
+Test it in Swagger:
+1. Restart the backend and open http://localhost:3000/docs.
+2. Run POST /auth/login.
+3. In the response, check that you see the user but no accessToken.
+4. In browser DevTools, check Network → login request → Response Headers for Set-Cookie.
+5. Run POST /auth/logout, then check that the cookie is cleared.
+This logout endpoint clears the browser’s cookie. Your 1h JWT can still be used until it expires if someone already copied it; server-side token revocation needs a refresh-token/session record. Also, a cookie with a 30-minute lifetime would expire 30 minutes after login, not after 30 minutes of inactivity; idle-timeout enforcement is a separate step.
+
 ================================================
 Date: 2026-11-17
 Student: Malak Mohamed
