@@ -172,6 +172,55 @@ export class AdminService {
     };
   }
 
+  /**
+   * ACC-07a. Sets a temporary password and flags the account so the
+   * JwtAuthGuard only lets it reach /auth/me and /auth/change-password until
+   * a new password is set. Also clears any lockout and revokes the refresh
+   * token, so existing sessions end.
+   */
+  async resetPassword(
+    admin: AuthUser,
+    targetId: string,
+    temporaryPassword: string,
+  ) {
+    const target = await this.getAccountOrThrow(targetId);
+
+    if (target.role === 'admin') {
+      throw new ForbiddenException(
+        'Admin passwords cannot be reset through this endpoint',
+      );
+    }
+
+    if (target.status === 'deactivated') {
+      throw new ConflictException(
+        'This account was deactivated by its owner and cannot sign in',
+      );
+    }
+
+    const passwordHash = await bcrypt.hash(temporaryPassword, BCRYPT_ROUNDS);
+
+    const updated = await this.usersService.updatePassword(
+      targetId,
+      passwordHash,
+      true,
+    );
+
+    // The password itself is never written to the audit log.
+    await this.auditLogs.record({
+      actorId: admin.userId,
+      action: 'account.password_reset',
+      targetType: 'user',
+      targetId,
+      details: { role: target.role },
+    });
+
+    return {
+      message:
+        'Password reset. The account must set a new password at its next login.',
+      user: toPublicUser(updated ?? target),
+    };
+  }
+
   /** GEN-07 */
   listAuditLogs(query: ListAuditLogsQueryDto) {
     return this.auditLogs.list(query);
