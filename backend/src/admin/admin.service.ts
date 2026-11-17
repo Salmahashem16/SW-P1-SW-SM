@@ -12,6 +12,7 @@ import * as bcrypt from 'bcryptjs';
 
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import type { AuthUser } from '../auth/auth.types';
+import { DomainEvents } from '../common/events/domain-events';
 import { isDuplicateKeyError } from '../common/mongo-errors';
 import type {
   ProviderType,
@@ -39,6 +40,7 @@ export class AdminService {
   constructor(
     private readonly usersService: UsersService,
     private readonly auditLogs: AuditLogsService,
+    private readonly events: DomainEvents,
     @InjectConnection() private readonly connection: Connection,
   ) {}
 
@@ -137,8 +139,12 @@ export class AdminService {
       details: { role: target.role, reason: reason ?? null },
     });
 
-    // TODO (GEN-01): send the in-app notification to the suspended moderator
-    // once the notifications service exists.
+    // GEN-01: the notifications module listens for this.
+    await this.events.emit('account.suspended', {
+      userId: targetId,
+      role: target.role,
+      reason: reason ?? null,
+    });
 
     return {
       message: 'Account suspended',
@@ -164,7 +170,11 @@ export class AdminService {
       details: { role: target.role },
     });
 
-    // TODO (GEN-01): in-app notification to the reactivated account.
+    // GEN-01: the notifications module listens for this.
+    await this.events.emit('account.reactivated', {
+      userId: targetId,
+      role: target.role,
+    });
 
     return {
       message: 'Account reactivated',
