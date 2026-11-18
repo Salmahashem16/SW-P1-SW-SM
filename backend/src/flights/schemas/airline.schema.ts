@@ -1,3 +1,4 @@
+
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
 
@@ -5,23 +6,51 @@ import { providerStatusPlugin } from '../../common/provider-status';
 
 export type AirlineDocument = HydratedDocument<Airline>;
 
-/**
- * Owner: Member 3 (Flights). Skeleton created early so admin features
- * (ACC-13, ACC-15, ACC-17) can reference it. Add your own fields (logo,
- * baggage policy, cancellation tiers, ...) here.
- *
- * Please keep: the class/model name "Airline", `name`, `code`, and the
- * status fields from providerStatusPlugin.
- */
 @Schema({ timestamps: true })
 export class Airline {
-  @Prop({ required: true, trim: true })
+  @Prop({
+    required: true,
+    trim: true,
+    minlength: 2,
+    maxlength: 100,
+  })
   name: string;
 
-  @Prop({ required: true, unique: true, uppercase: true, trim: true })
+  @Prop({
+    required: true,
+    unique: true,
+    uppercase: true,
+    trim: true,
+  })
   code: string;
 
-  // Added by providerStatusPlugin (ACC-15).
+  @Prop({
+    type: String,
+    default: null,
+  })
+  logo: string | null;
+
+  @Prop({
+    type: {
+      extraBagPrice: {
+        type: Number,
+        required: true,
+        min: 0.01,
+      },
+      maxExtraBags: {
+        type: Number,
+        required: true,
+        min: 0,
+        validate: Number.isInteger,
+      },
+    },
+    default: null,
+  })
+  baggagePolicy: {
+    extraBagPrice: number;
+    maxExtraBags: number;
+  } | null;
+
   isActive: boolean;
   deactivatedAt: Date | null;
   deactivatedBy: Types.ObjectId | null;
@@ -30,6 +59,7 @@ export class Airline {
   updatedAt?: Date;
 }
 
-export const AirlineSchema = SchemaFactory.createForClass(Airline);
+export const AirlineSchema =
+  SchemaFactory.createForClass(Airline);
 
 AirlineSchema.plugin(providerStatusPlugin);

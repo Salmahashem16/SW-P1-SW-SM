@@ -6,7 +6,14 @@ export type AirportDocument = HydratedDocument<Airport>;
 
 @Schema({ timestamps: true })
 export class Airport {
-  @Prop({ required: true, unique: true, uppercase: true, trim: true })
+  @Prop({
+    required: true,
+    unique: true,
+    uppercase: true,
+    trim: true,
+    minlength: 3,
+    maxlength: 3,
+  })
   code: string;
 
   @Prop({ required: true, trim: true })
@@ -25,4 +32,5 @@ export class Airport {
   updatedAt?: Date;
 }
 
-export const AirportSchema = SchemaFactory.createForClass(Airport);
+export const AirportSchema =
+  SchemaFactory.createForClass(Airport);

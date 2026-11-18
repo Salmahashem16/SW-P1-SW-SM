@@ -9,27 +9,59 @@ import {
 export type FlightDocument = HydratedDocument<Flight>;
 
 export const FLIGHT_STATUSES = [
-  'scheduled',
-  'delayed',
-  'cancelled',
-  'completed',
+  'Scheduled',
+  'Cancelled',
+  'Departed',
 ] as const;
 
 export type FlightStatus = (typeof FLIGHT_STATUSES)[number];
 
+export const CABIN_CLASSES = [
+  'Economy',
+  'Premium Economy',
+  'Business',
+  'First',
+] as const;
+
+export type CabinClass = (typeof CABIN_CLASSES)[number];
+
 @Schema({ _id: true })
 export class CabinInventory {
-  @Prop({ required: true, trim: true })
-  cabinClass: string;
+  @Prop({
+    type: String,
+    required: true,
+    enum: [...CABIN_CLASSES],
+  })
+  cabinClass: CabinClass;
 
-  @Prop({ required: true, min: 0 })
+  @Prop({
+    required: true,
+    min: 1,
+    validate: Number.isInteger,
+  })
   capacity: number;
 
-  @Prop({ required: true, min: 0 })
+  @Prop({ required: true, min: 0.01 })
   price: number;
 
-  @Prop({ required: true, uppercase: true, trim: true })
+  @Prop({
+    required: true,
+    uppercase: true,
+    trim: true,
+  })
   currency: string;
+
+  @Prop({
+    required: true,
+    min: 0,
+    validate: Number.isInteger,
+  })
+  freeBaggageCount: number;
+
+  @Prop({ required: true, min: 0.01 })
+  maxBagWeightKg: number;
+
+
 }
 
 export const CabinInventorySchema =
@@ -45,7 +77,11 @@ export class Flight {
   })
   airlineId: Types.ObjectId;
 
-  @Prop({ required: true, uppercase: true, trim: true })
+  @Prop({
+    required: true,
+    uppercase: true,
+    trim: true,
+  })
   flightNumber: string;
 
   @Prop({
@@ -68,30 +104,43 @@ export class Flight {
   @Prop({ type: Date, required: true })
   arrivalAt: Date;
 
+  @Prop({ type: String, required: true })
+  departureLocalDate: string;
+
   @Prop({
     type: String,
     enum: [...FLIGHT_STATUSES],
-    default: 'scheduled',
+    default: 'Scheduled',
+    index: true,
   })
   status: FlightStatus;
 
-  @Prop({ type: [CabinInventorySchema], default: [] })
+  @Prop({
+    type: [CabinInventorySchema],
+    default: [],
+  })
   cabins: CabinInventory[];
 
   createdAt?: Date;
   updatedAt?: Date;
 }
 
-export const FlightSchema = SchemaFactory.createForClass(Flight);
-
-FlightSchema.index({
-  departureAirportId: 1,
-  arrivalAirportId: 1,
-  departureAt: 1,
-  status: 1,
-});
+export const FlightSchema =
+  SchemaFactory.createForClass(Flight);
 
 FlightSchema.index({
   airlineId: 1,
+  flightNumber: 1,
   departureAt: 1,
 });
+
+
+FlightSchema.index(
+  {
+    airlineId: 1,
+    flightNumber: 1,
+    departureLocalDate: 1,
+  },
+  { unique: true },
+);
+
