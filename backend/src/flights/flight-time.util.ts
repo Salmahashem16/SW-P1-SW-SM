@@ -62,6 +62,12 @@ export function localTimeToUtc(
   const numbers = match.slice(1).map(Number);
 
   const [year, month, day, hour, minute, second] = numbers;
+  
+  if (year < 100) {
+  throw new BadRequestException(
+    'Year must be 100 or greater',
+  );
+}
 
   const wallTimestamp = Date.UTC(
     year,

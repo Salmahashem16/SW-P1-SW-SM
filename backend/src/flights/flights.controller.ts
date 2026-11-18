@@ -31,6 +31,10 @@ import { FlightsService } from './flights.service';
 import { CreateCabinDto } from './dto/create-cabin.dto';
 import { UpdateCabinDto } from './dto/update-cabin.dto';
 import { UpdateBaggagePolicyDto } from './dto/update-baggage-policy.dto';
+import { UpdateFlightDto } from './dto/update-flight.dto';
+import { UpdateCancellationPolicyDto } from './dto/update-cancellation-policy.dto';
+import { Query } from '@nestjs/common';
+import { SearchFlightsDto } from './dto/search-flights.dto';
 
 @ApiTags('Flights')
 @Controller()
@@ -85,6 +89,22 @@ export class FlightsController {
     );
   }
 
+@Get('flights/search')
+@ApiOperation({
+  summary: 'Search flights (FLT-11, FLT-12, FLT-15)',
+})
+searchFlights(@Query() dto: SearchFlightsDto) {
+  return this.flightsService.searchFlights(dto);
+}
+
+@Get('flights/:id')
+@ApiOperation({
+  summary: 'Get flight details (FLT-17)',
+})
+getFlightDetails(@Param('id') id: string) {
+  return this.flightsService.getFlightDetails(id);
+}
+
   @Post('flights')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles('airlineModerator')
@@ -98,6 +118,25 @@ export class FlightsController {
   ) {
     return this.flightsService.createFlight(dto, user);
   }
+
+@Patch('flights/:id')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('airlineModerator')
+@ApiCookieAuth('access_token')
+@ApiOperation({
+  summary: 'Update flight details (FLT-05)',
+})
+updateFlight(
+  @Param('id') id: string,
+  @Body() dto: UpdateFlightDto,
+  @CurrentUser() user: AuthUser,
+) {
+  return this.flightsService.updateFlight(
+    id,
+    dto,
+    user,
+  );
+}
 
   @Post('flights/:id/cabins')
   @UseGuards(JwtAuthGuard, RolesGuard)
@@ -153,5 +192,41 @@ export class FlightsController {
       user,
     );
   }
+
+@Put('airlines/:id/cancellation-policy')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('airlineModerator')
+@ApiCookieAuth('access_token')
+@ApiOperation({
+  summary: 'Update airline cancellation policy (FLT-09)',
+})
+updateCancellationPolicy(
+  @Param('id') id: string,
+  @Body() dto: UpdateCancellationPolicyDto,
+  @CurrentUser() user: AuthUser,
+) {
+  return this.flightsService.updateCancellationPolicy(
+    id,
+    dto,
+    user,
+  );
+}
+
+@Post('flights/:id/cancel')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles('airlineModerator')
+@ApiCookieAuth('access_token')
+@ApiOperation({
+  summary: 'Cancel flight (FLT-06)',
+})
+cancelFlight(
+  @Param('id') id: string,
+  @CurrentUser() user: AuthUser,
+) {
+  return this.flightsService.cancelFlight(
+    id,
+    user,
+  );
+}
 
 }

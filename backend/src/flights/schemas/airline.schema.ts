@@ -51,6 +51,28 @@ export class Airline {
     maxExtraBags: number;
   } | null;
 
+  @Prop({
+    type: {
+      cancellationDeadlineHours: {
+        type: Number,
+        required: true,
+        min: 0,
+        validate: Number.isInteger,
+      },
+      refundPercentage: {
+        type: Number,
+        required: true,
+        min: 0,
+        max: 100,
+      },
+    },
+    default: null,
+  })
+  cancellationPolicy: {
+    cancellationDeadlineHours: number;
+    refundPercentage: number;
+  } | null;
+
   isActive: boolean;
   deactivatedAt: Date | null;
   deactivatedBy: Types.ObjectId | null;
