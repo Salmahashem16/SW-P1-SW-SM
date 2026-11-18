@@ -7,4 +7,4 @@ coverage/
 *.tsbuildinfo
 
 # GEN-08: uploaded images are stored on the server, not in git
-uploads/
+/backend/uploads/
