@@ -188,3 +188,60 @@ are correct across them. Verified with a 19-check end-to-end test. Also used
 the assistant to check that all five PRs merge into develop without
 conflicts, and to resolve the one app.module.ts conflict.
 ================================================
+================================================
+Date: 2026-11-19
+Student: Eyad Elsady (Member 4 - Hotels)
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: HTL-01..HTL-12, HTL-15, HTL-22..HTL-24, GEN-08
+
+Prompt:
+We are working on milestone one. Read CLAUDE.local.md and the project
+structure. Here are my Member 4 tasks (HTL-01, 02, 03, 04, 05, 06, 08, 09,
+10, 11, 12, 15, 22, 23, 24 plus GEN-08 shared image-upload handling for
+hotels). Create and switch to branch member4-tasks. List my tasks and your
+plan for each, plus which files you'll touch. Flag anything that belongs to
+another member. Wait for my approval before writing code.
+
+How the output was used:
+Got a per-requirement plan built from the official requirements workbook,
+with the files to touch and the parts owned by other members flagged
+(hotel booking, holds, payment and cancellation belong to Member 5; seeded
+city/country data belongs to Member 6). Reviewed and approved it before
+any code was written. Created member4-tasks from the latest develop.
+================================================
+================================================
+Date: 2026-11-19
+Student: Eyad Elsady (Member 4 - Hotels)
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: (setup)
+
+Prompt:
+Make an env for me where I put my stuff in it.
+
+How the output was used:
+Created a local, gitignored .env from .env.example with a generated
+JWT_SECRET and a placeholder for the MongoDB password, which I fill in
+myself. No credentials were shared with the AI tool.
+================================================
+================================================
+Date: 2026-11-19
+Student: Eyad Elsady (Member 4 - Hotels)
+Tool: Claude Code (Claude Opus 5.5)
+Related Requirement: HTL-01..HTL-12, HTL-15, HTL-22..HTL-24, GEN-08
+
+Prompt:
+OK, continue (implement the approved plan), then open a PR with
+Salmahashem16 as reviewer.
+
+How the output was used:
+Reviewed and committed the Hotels module: Hotel, Room and Review schemas;
+hotel profile, photos and policies (HTL-01, 02, 09, 10); rooms, bookable
+ranges, blocks, deactivation and deletion rules (HTL-03..06); per-night
+room status calendar (HTL-08); search with price/rating filters and
+sorting (HTL-11, 12); free rooms with stay totals (HTL-15); moderator
+reservations list (HTL-22); reviews and average rating (HTL-23, 24); and
+the shared JPG/PNG upload helper that checks file content, 5 MB / 5 images
+(GEN-08). Room overlap checks live in one HotelInventoryService that
+Member 5 can reuse for hotel holds. Verified with build, lint and unit
+tests for the date ranges, refund tiers, search rule and image checks.
+================================================
