@@ -1,17 +1,14 @@
 import { Types } from 'mongoose';
 
 /**
- * Fields the hotels module reads from Member 5's HotelBooking documents.
+ * Fields the hotels module reads from Member 5's HotelBooking documents
+ * (bookings/schemas/hotel-booking.schema.ts): userId, hotelId, checkIn,
+ * checkOut, totalAmount, status, bookingReference, plus
  *
- * HotelBooking (bookings/schemas/hotel-booking.schema.ts) currently has
- * userId, hotelId, checkIn, checkOut, totalAmount, status and
- * bookingReference. Hotels additionally needs, per reservation:
+ *   rooms: [{ roomId, pricePerNight, adults, children }]
+ *   holdExpiresAt: Date | null   // HTL-18, set on Pending Payment holds
  *
- *   rooms: [{ roomId: ObjectId, pricePerNight: number, adults: number, children: number[] }]
- *   holdExpiresAt: Date   // HTL-18, set on Pending Payment holds
- *
- * If Member 5 names them differently, change ROOM_ID_PATH / HOLD_EXPIRES_FIELD
- * here; nothing else in the hotels module needs to change.
+ * If those names ever change, change ROOM_ID_PATH / HOLD_EXPIRES_FIELD here.
  */
 export const ROOM_ID_PATH = 'rooms.roomId';
 export const HOLD_EXPIRES_FIELD = 'holdExpiresAt';
