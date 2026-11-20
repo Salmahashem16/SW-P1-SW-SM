@@ -27,6 +27,29 @@ export interface DomainEventMap {
     providerName: string;
     moderatorIds: string[];
   };
+  /** HTL-17: reservation paid and Confirmed (notify the guest). */
+  'hotelBooking.confirmed': {
+    bookingId: string;
+    userId: string;
+    hotelId: string;
+    hotelName: string;
+    bookingReference: string;
+    checkIn: string;
+    checkOut: string;
+    totalAmount: number;
+    currency: string;
+  };
+  /** HTL-21: reservation cancelled; PAY-03 refunds refundAmount if > 0. */
+  'hotelBooking.cancelled': {
+    bookingId: string;
+    userId: string;
+    hotelId: string;
+    hotelName: string;
+    bookingReference: string | null;
+    paymentId: string | null;
+    refundAmount: number;
+    currency: string;
+  };
 }
 
 export type DomainEventName = keyof DomainEventMap;

@@ -188,7 +188,6 @@ are correct across them. Verified with a 19-check end-to-end test. Also used
 the assistant to check that all five PRs merge into develop without
 conflicts, and to resolve the one app.module.ts conflict.
 ================================================
-<<<<<<< Updated upstream
 ================================================
 Date: 2026-11-19
 Student: Eyad Elsady (Member 4 - Hotels)
@@ -270,7 +269,6 @@ fields to HotelBooking, reviews depend on Member 5's Completed status and
 a real booking flow, and city/country validation depends on Member 6's
 reference-data seed. No credentials were shared with the AI tool.
 ================================================
-=======
 Student: Lina Abdelhamid (Member 3 - Flights Module)
 Tool: ChatGPT
 Date: 18/11/2026
@@ -361,4 +359,48 @@ Used Swagger to inspect the flight management endpoints and test API requests. C
 This supports testing and verification of the Flights Module and GEN-06 (authentication and authorization).
 
 ================================================
->>>>>>> Stashed changes
+================================================
+Date: 2026-11-20
+Student: Mohamed Mahmoud (Member 5 - Hotel Reservations)
+Tool: Claude Code
+Related Requirement: HTL-15..HTL-24, PAY-01..PAY-03, GEN-11
+
+Prompt:
+I'm Member 5 (hotel reservations and reviews). Read the project
+description, the requirements workbook and the repository, and tell me
+what I need to build, what already exists, and which parts depend on
+other members.
+
+How the output was used:
+Got a plan per requirement. It showed that HTL-15 (available rooms) and
+HTL-23/24 (reviews) were already built by Member 4, that HTL-19 does not
+exist in the workbook, and that no shared payment service (PAY-01..03)
+existed yet. Decided to build my hotel booking flow now and leave clear
+hooks for the payment service.
+================================================
+================================================
+Date: 2026-11-20
+Student: Mohamed Mahmoud (Member 5 - Hotel Reservations)
+Tool: Claude Code
+Related Requirement: HTL-16, HTL-17, HTL-18, HTL-20, HTL-21, HTL-23, PAY-02, GEN-11
+
+Prompt:
+Start my work on a branch from develop: multi-room holds, confirmation,
+my reservations, cancellation with refund, and completed stays. Reuse
+Member 4's HotelInventoryService and refund helper, and don't build the
+missing payment service.
+
+How the output was used:
+Reviewed and committed the hotel-bookings module: HotelBooking fields
+(rooms with guests and agreed prices, hold expiry, policy snapshot,
+payment and refund fields); POST /api/hotel-bookings creating a 10-minute
+Pending Payment hold for all selected rooms with guest/occupancy checks
+and a write-then-verify race check (HTL-16, HTL-18); policies and
+accept-policies (PAY-02); confirmPayment() giving a unique HTL- reference
+and an in-app notification event (HTL-17); my reservations grouped as
+upcoming/past/cancelled (HTL-20); cancel before check-in with the
+booked tiers' refund (HTL-21); and a job that expires holds and marks
+finished stays Completed so they can be reviewed (GEN-11, HTL-23).
+A dev-only test-confirm endpoint stands in for the payment webhook
+until PAY-01 is merged. Verified with build, lint and unit tests.
+================================================
