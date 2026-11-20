@@ -188,6 +188,7 @@ are correct across them. Verified with a 19-check end-to-end test. Also used
 the assistant to check that all five PRs merge into develop without
 conflicts, and to resolve the one app.module.ts conflict.
 ================================================
+<<<<<<< Updated upstream
 ================================================
 Date: 2026-11-19
 Student: Eyad Elsady (Member 4 - Hotels)
@@ -269,3 +270,95 @@ fields to HotelBooking, reviews depend on Member 5's Completed status and
 a real booking flow, and city/country validation depends on Member 6's
 reference-data seed. No credentials were shared with the AI tool.
 ================================================
+=======
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I implement airline and airport management in the Flights Module and connect them to the existing backend?
+
+How the output was used:
+Created the airline and airport management functionality using the existing NestJS backend structure. Added the necessary schemas, DTOs, services, and controllers to manage airline and airport information. This allows flights to reference valid airlines and airports.
+This supports FLT-01 (airline management) and FLT-02 (airport management).
+
+================================================
+
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I implement flight creation and management while validating departure and arrival information?
+
+How the output was used:
+Developed flight management functionality to handle flight information, including airline, origin, destination, departure time, arrival time, and availability. Added validation to check flight information and prevent invalid schedules.
+This supports FLT-03 (flight creation and management) and related flight schedule validation requirements.
+
+================================================
+
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I implement cabin classes with different prices and capacities for each flight, and manage baggage allowances?
+
+How the output was used:
+Implemented cabin management with Economy, Premium Economy, Business, and First Class. Each cabin has its own price and passenger capacity. Added baggage policy management to configure baggage allowances and extra baggage settings. Created the related DTOs and endpoints for updating cabin and baggage information.
+This supports FLT-04 (cabin classes and pricing) and FLT-08 (baggage policies).
+
+================================================
+
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I verify that FLT-04 and FLT-08 are working correctly using Swagger and make sure the endpoints are protected?
+
+How the output was used:
+Tested the cabin and baggage endpoints using Swagger. Confirmed that the backend compiled successfully and that all three endpoints appeared in Swagger. Tested an unauthorized request and received HTTP 401, confirming that authentication protection was applied.
+This supports FLT-04, FLT-08, and GEN-06 (authentication and authorization).
+
+================================================
+
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I continue implementing FLT-05 and FLT-09 and integrate them with the existing flight management functionality?
+
+How the output was used:
+Continued developing the flight management functions after completing cabin and baggage management. Worked on integrating the new functionality with the existing flight schemas, services, and controllers while maintaining consistency with the backend architecture.
+This supports FLT-05 and FLT-09.
+
+================================================
+
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I implement flight searching and validate flight schedules, including departure and arrival times?
+
+How the output was used:
+Developed flight search and schedule validation functionality. Added checks for departure and arrival information to handle flight timestamps consistently and prevent invalid time configurations. Integrated the functionality with the existing Flights Module.
+This supports the flight search and schedule validation requirements within the assigned Flights Module.
+
+================================================
+
+Student: Lina Abdelhamid (Member 3 - Flights Module)
+Tool: ChatGPT
+Date: 18/11/2026
+
+Prompt:
+How do I test the flight management endpoints using Swagger and verify that validation and authentication work correctly?
+
+How the output was used:
+Used Swagger to inspect the flight management endpoints and test API requests. Checked endpoint registration, input validation, and authentication behavior. The previously tested cabin and baggage endpoints compiled successfully, and unauthorized access returned HTTP 401.
+This supports testing and verification of the Flights Module and GEN-06 (authentication and authorization).
+
+================================================
+>>>>>>> Stashed changes
