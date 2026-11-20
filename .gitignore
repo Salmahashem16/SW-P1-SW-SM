@@ -4,3 +4,7 @@ coverage/
 .env
 .env.*
 !.env.example
+*.tsbuildinfo
+
+# GEN-08: uploaded images are stored on the server, not in git
+/backend/uploads/
