@@ -15,6 +15,7 @@ import { FlightsModule } from './flights/flights.module';
 import { HotelsModule } from './hotels/hotels.module';
 import { ModerationModule } from './moderation/moderation.module';
 import { UsersModule } from './users/users.module';
+import { ItinerariesModule } from './itineraries/itineraries.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { UsersModule } from './users/users.module';
     AuditLogsModule,
     AdminModule,
     ModerationModule,
+    ItinerariesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
